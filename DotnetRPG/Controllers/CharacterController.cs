@@ -1,4 +1,5 @@
-﻿using DotnetRPG.Models;
+﻿using DotnetRPG.Dtos.Character;
+using DotnetRPG.Models;
 using DotnetRPG.Services.CharacterService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +17,12 @@ namespace DotnetRPG.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Character>> Get()
+        public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> Get()
         {
             return Ok(await _characterService.GetAllCharacters());
         }
         [HttpPost]
-        public async Task<ActionResult<List<Character>>> AddCharacter(Character character)
+        public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> AddCharacter(AddCharacterDto character)
         {
             return Ok(await _characterService.AddCharacter(character));
         }
