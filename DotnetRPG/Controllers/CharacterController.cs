@@ -1,7 +1,5 @@
 ﻿using DotnetRPG.Dtos.Character;
 using DotnetRPG.Models;
-using DotnetRPG.Services.CharacterService;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotnetRPG.Controllers
@@ -21,10 +19,22 @@ namespace DotnetRPG.Controllers
         {
             return Ok(await _characterService.GetAllCharacters());
         }
+
         [HttpPost]
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> AddCharacter(AddCharacterDto character)
         {
             return Ok(await _characterService.AddCharacter(character));
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> UpdateCharacter(UpdateCharaterDto updatecharacter)
+        {
+            var response = await _characterService.UpdateCharacter(updatecharacter);
+
+            if (response.Data == null)
+                return NotFound(response);
+
+            return Ok();
         }
     }
 }
