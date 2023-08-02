@@ -1,5 +1,6 @@
 ﻿using DotnetRPG.Dtos.Character;
 using DotnetRPG.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DotnetRPG.Services.CharacterService
 {
@@ -65,6 +66,31 @@ namespace DotnetRPG.Services.CharacterService
                 serviceResponse.Succes = false;
                 serviceResponse.Message = ex.Message;
             }
+
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<List<GetCharacterDto>>> DeleteCharacter([FromRoute] int id)
+        {
+            var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
+            try 
+            {
+               var character = characters.FirstOrDefault(c => c.Id == id);
+
+               if (character == null)
+                   throw new Exception($"Character whith {id} not found");
+
+               characters.Remove(character);
+               serviceResponse.Data = characters.Select(c => mapper.Map<GetCharacterDto>(c)).ToList();
+                
+            }
+
+            catch(Exception ex) 
+            { 
+                serviceResponse.Succes=false;
+                serviceResponse.Message = ex.Message;
+            }
+
 
             return serviceResponse;
         }
